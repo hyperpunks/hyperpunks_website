@@ -1,6 +1,10 @@
 # hyperpunks_website
 
-## Build Setup
+## The website hyperpunks.com
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/63293b3f-d59e-4102-bc03-1abed55c0212/deploy-status)](https://app.netlify.com/sites/hyperpunks/deploys)
+
+## Build
 
 ```bash
 # install dependencies

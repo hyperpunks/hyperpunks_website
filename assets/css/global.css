@@ -1,0 +1,15 @@
+#app,
+#app div,
+#app a,
+#app span,
+#app table,
+#app thead,
+#app tbody,
+#app tr,
+#app td {
+  font-family: 'Press Start 2P', cursive !important;
+}
+
+.redtext {
+  color: #ea201c;
+}

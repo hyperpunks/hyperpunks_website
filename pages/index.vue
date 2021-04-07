@@ -2,12 +2,19 @@
   <v-container>
     <v-row align="center" style="margin-top: 60px" justify="center">
       <v-text-field
+        v-model="tokenID"
         class="pt-5 redtext ma-1"
         style="max-width: 600px"
         placeholder="*Search a number between 0 - 9999"
         solo
       ></v-text-field>
-      <v-btn style="max-height: 48px" color="#450302" x-large class="mb-2">
+      <v-btn
+        style="max-height: 48px"
+        color="#450302"
+        x-large
+        class="mb-2"
+        @click="searchForToken()"
+      >
         GO
       </v-btn>
     </v-row>
@@ -20,7 +27,7 @@ export default {
   auth: false,
   data() {
     return {
-      search: '',
+      tokenID: '',
     }
   },
   mounted() {
@@ -33,7 +40,7 @@ export default {
   },
   methods: {
     searchForToken() {
-      console.log(' searching for token...' + this.search)
+      this.$router.push('/nft?id=' + this.tokenID)
     },
   },
 }

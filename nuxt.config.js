@@ -7,8 +7,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - hyperpunks_website',
-    title: 'hyperpunks_website',
+    titleTemplate: 'hyperpunks',
+    title: 'hyperpunks',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -50,6 +50,7 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -67,7 +68,14 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     optionsPath: './vuetify.options.js',
   },
+  toast: {
+    position: 'top-center',
+    duration: 4000,
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  generate: {
+    fallback: true,
+  },
 }

@@ -14,5 +14,12 @@ module.exports = {
   ],
   plugins: [],
   // add your custom rules here
-  rules: {},
+  rules: {
+    'no-console': 'off',
+    camelcase: 'off',
+    indent: 'off',
+  },
+  globals: {
+    window: true,
+  },
 }

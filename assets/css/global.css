@@ -25,3 +25,15 @@
   background-color: transparent !important;
   border-color: transparent !important;
 }
+
+.darkred {
+  color: #450302;
+}
+
+.darkredbg {
+  background-color: #450302;
+}
+
+.theme--dark.v-input {
+  color: #ea201c !important;
+}

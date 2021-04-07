@@ -1,15 +1,31 @@
 <template>
   <v-app dark>
-    <v-app-bar v-if="!countdownFinished" fixed clipped-left app elevation="0">
+    <v-app-bar
+      v-if="!countdownFinished"
+      color="transparent"
+      fixed
+      clipped-left
+      app
+      elevation="0"
+    >
       <v-toolbar-title class="ml-0 pl-4">
         <nuxt-link style="text-decoration: none" to="/">
-          <img src="/logo.png" alt="hyperpunks logo" />
+          <img src="/logo.png" style="height: 30px" alt="hyperpunks logo" />
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-btn to="/" class="ma-2" outlined>home</v-btn>
-      <v-btn to="/about" class="ma-2" outlined>about</v-btn>
-      <v-btn to="/ar" class="ma-2" outlined>ar</v-btn>
+      <v-btn to="/" class="ma-2" text>home</v-btn>
+      <v-btn to="/about" class="ma-2" text>about</v-btn>
+      <v-btn to="/ar" class="ma-2" text>ar</v-btn>
+      <v-btn
+        href="https://twitter.com/aantonop"
+        target="_blank"
+        fab
+        text
+        redtext
+      >
+        <v-icon>mdi-twitter</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -44,8 +60,9 @@ export default {
   mounted() {
     const t = Date.parse(DEADLINE) - Date.parse(new Date())
     if (t > 0) {
-      this.countdownFinished = true
-      this.$router.push('/countdown')
+      this.countdownFinished = false // todo make true!
+      // this.$router.push('/countdown')
+      console.log('uncomment this!')
     }
   },
   methods: {},

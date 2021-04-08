@@ -907,14 +907,8 @@ export const ERC1155_ABI = [
   },
   {
     constant: false,
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'amount',
-        type: 'uint256',
-      },
-    ],
-    name: 'withdrawAmount',
+    inputs: [],
+    name: 'withdraw',
     outputs: [],
     payable: false,
     stateMutability: 'nonpayable',

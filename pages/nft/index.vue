@@ -1,9 +1,26 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 600px">
-      <v-card elevation="0" class="pa-5">
-        <v-card-title>{{ nft.name }}</v-card-title>
+    <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 800px">
+      <v-row align="center" style="margin-top: 60px" justify="center">
+        <v-text-field
+          v-model="tokenID"
+          class="pt-5 redtext ma-1"
+          style="max-width: 600px"
+          placeholder="*Search a number between 0 - 9999"
+          solo
+        ></v-text-field>
+        <v-btn
+          style="max-height: 48px"
+          color="#450302"
+          x-large
+          class="mb-2"
+          @click="searchForToken()"
+        >
+          GO
+        </v-btn>
+      </v-row>
 
+      <v-card elevation="0" class="pa-5">
         <v-img
           v-if="!nft.animation_url"
           :src="nft.image"
@@ -11,7 +28,6 @@
           contain
         >
         </v-img>
-
         <model-viewer
           v-if="nft.animation_url"
           data-js-focus-visible
@@ -23,12 +39,27 @@
           preload
         ></model-viewer>
 
-        <v-card-text>
-          {{ nft.description }}
-        </v-card-text>
+        <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 800px">
+          <v-row align="center" style="margin-top: 60px">
+            <span class="title">{{ nft.name }}</span>
+            <v-spacer />
+            <section v-if="itemPriceETH && !isOwned">
+              <v-spacer></v-spacer>
+              <v-icon right>mdi-ethereum</v-icon>
+              <span class="body-1">{{ itemPriceETH }}</span>
+              <v-btn
+                width="150px"
+                elevation="0"
+                class="ml-5 redtext"
+                @click="buyNow()"
+                >buy</v-btn
+              >
+            </section>
+          </v-row>
+        </v-flex>
 
         <v-card-text>
-          <v-list>
+          <v-list color="transparent">
             <v-list-item v-for="(item, i) in nft.attributes" :key="i">
               <v-list-item-content>
                 <v-list-item-title v-text="item.trait_type"></v-list-item-title>
@@ -41,11 +72,7 @@
         </v-card-text>
 
         <v-card-text>
-          <a target="_blank" :href="nft.external_url">{{ nft.external_url }}</a>
-        </v-card-text>
-
-        <v-card-text>
-          <v-list dense>
+          <v-list dense color="transparent">
             <v-list-group
               v-for="item in infoItems"
               :key="item.title"
@@ -70,19 +97,6 @@
           </v-list>
         </v-card-text>
 
-        <v-card-actions v-if="itemPriceETH && !isOwned">
-          <v-spacer></v-spacer>
-          <v-icon right>mdi-ethereum</v-icon>
-          <span class="body-1">{{ itemPriceETH }}</span>
-          <v-btn
-            width="150px"
-            elevation="0"
-            class="ml-5 redtext"
-            @click="buyNow()"
-            >buy</v-btn
-          >
-        </v-card-actions>
-
         <v-card-actions v-if="isOwned">
           <v-spacer></v-spacer>
           <span class="title orange--text">this item is not for sale</span>
@@ -104,6 +118,7 @@ export default {
   data() {
     return {
       id: null,
+      tokenID: null,
       contract: null,
       itemPriceETH: null,
       itemPriceWei: null,
@@ -131,46 +146,49 @@ export default {
 
   mounted() {
     this.id = this.$route.query.id
-    this.loadNFT(this.id)
-    if (window.ethereum) {
-      this.ethers = new ethers.providers.Web3Provider(window.ethereum)
-      this.loadContract()
-    } else {
-      console.warn('window.ethereum NOT detected!')
-    }
-
-    this.infoItems = [
-      {
-        action: 'mdi-information-outline',
-        items: [
-          {
-            title: 'Contract: ' + CONTRACT_ADDR,
-          },
-          {
-            title: 'Token ID: ' + this.id,
-          },
-          {
-            title: 'Blockchain: Ethereum',
-          },
-        ],
-        title: 'Chain Info',
-      },
-      {
-        action: 'mdi-heart',
-        items: [
-          {
-            title:
-              'Created by X. A collection of rare artwork based on X themes',
-          },
-          {
-            title: 'Only limited copies will exist',
-          },
-        ],
-        title: 'About Collection',
-      },
-    ]
+    this.init(this.id)
   },
   methods: {
+    init(theID) {
+      this.loadNFT(theID)
+      if (window.ethereum) {
+        this.ethers = new ethers.providers.Web3Provider(window.ethereum)
+        this.loadContract()
+      } else {
+        console.warn('window.ethereum NOT detected!')
+      }
+
+      this.infoItems = [
+        {
+          action: 'mdi-information-outline',
+          items: [
+            {
+              title: 'Contract: ' + CONTRACT_ADDR,
+            },
+            {
+              title: 'Token ID: ' + theID,
+            },
+            {
+              title: 'Blockchain: Ethereum',
+            },
+          ],
+          title: 'Chain Info',
+        },
+        {
+          action: 'mdi-heart',
+          items: [
+            {
+              title:
+                'HyperPunks, augmented reality NFTs. 10,000 programmatically generated characters, with their attributes, brought to the 3rd dimension and immortalized on the Ethereum blockchain.',
+            },
+            {
+              title: 'Only 10000 hyperpunks will exist',
+            },
+          ],
+          title: 'About Collection',
+        },
+      ]
+    },
     loadNFT(id) {
       this.$axios
         .$get('https://hyp.s3.eu-west-2.amazonaws.com/json/' + id)
@@ -209,6 +227,14 @@ export default {
           this.$toast.error(err.message)
         }
       }
+    },
+    searchForToken() {
+      if (this.tokenID == null) {
+        return
+      }
+      this.nft.animation_url = null
+      this.id = this.tokenID
+      this.init(this.tokenID)
     },
   },
 }

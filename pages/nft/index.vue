@@ -150,6 +150,7 @@ export default {
   },
   methods: {
     init(theID) {
+      this.isOwned = false
       this.loadNFT(theID)
       if (window.ethereum) {
         this.ethers = new ethers.providers.Web3Provider(window.ethereum)

@@ -14,14 +14,7 @@
           <v-container>
             <v-row>
               <v-col cols="12" md="6">
-                <v-text-field
-                  v-model="withdrawFromContract"
-                  label="Amount (wei)"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-btn color="primary" large @click="withdrawAmount()">
+                <v-btn color="primary" large @click="withdraw()">
                   Withdraw
                 </v-btn>
               </v-col>
@@ -74,7 +67,6 @@ export default {
       itemPriceWei: null,
       currentBalance: 0,
       currentBalanceETH: 0,
-      withdrawFromContract: 0,
       ethers: null,
       isOwner: false,
       signer: null,
@@ -141,14 +133,11 @@ export default {
         }
       }
     },
-    async withdrawAmount() {
+    async withdraw() {
       const overrides = { gasLimit: 60000 }
 
       try {
-        const tx = await this.contract.withdrawAmount(
-          this.withdrawFromContract,
-          overrides
-        )
+        const tx = await this.contract.withdraw(overrides)
         if (tx.hash) {
           this.$toast.info('Transaction submitted successfully')
         }

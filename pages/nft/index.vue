@@ -72,11 +72,15 @@
 
         <v-card-actions v-if="itemPriceETH && !isOwned">
           <v-spacer></v-spacer>
-          <v-btn width="150px" elevation="0" class="primary" @click="buyNow()"
-            >buy now</v-btn
-          >
           <v-icon right>mdi-ethereum</v-icon>
           <span class="body-1">{{ itemPriceETH }}</span>
+          <v-btn
+            width="150px"
+            elevation="0"
+            class="ml-5 redtext"
+            @click="buyNow()"
+            >buy</v-btn
+          >
         </v-card-actions>
 
         <v-card-actions v-if="isOwned">
@@ -169,10 +173,7 @@ export default {
   methods: {
     loadNFT(id) {
       this.$axios
-        .$get(
-          'https://raw.githubusercontent.com/AndreiD/Playground/master/nfts_sample/json/' +
-            id
-        )
+        .$get('https://hyp.s3.eu-west-2.amazonaws.com/json/' + id)
         .then((response) => {
           this.nft = response
         })

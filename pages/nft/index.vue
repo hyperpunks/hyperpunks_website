@@ -1,6 +1,6 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 800px">
+    <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
       <v-row align="center" style="margin-top: 60px" justify="center">
         <v-text-field
           v-model="tokenID"
@@ -39,7 +39,7 @@
           preload
         ></model-viewer>
 
-        <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 800px">
+        <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
           <v-row align="center" style="margin-top: 60px">
             <span class="title">{{ nft.name }}</span>
             <v-spacer />
@@ -179,8 +179,15 @@ export default {
           action: 'mdi-heart',
           items: [
             {
+              title: 'HyperPunks, augmented reality NFTs. 10,000 ',
+            },
+            {
               title:
-                'HyperPunks, augmented reality NFTs. 10,000 programmatically generated characters, with their attributes, brought to the 3rd dimension and immortalized on the Ethereum blockchain.',
+                'programmatically generated characters, with their attributes,',
+            },
+            {
+              title:
+                'brought to the 3rd dimension and immortalized on the Ethereum blockchain,',
             },
             {
               title: 'Only 10000 hyperpunks will exist',
@@ -248,4 +255,7 @@ export default {
 .styled-input label[for] {
   height: 48px;
 }
+// .v-list-item__subtitle {
+//   font-size: 0.8em !important;
+// }
 </style>

@@ -8,9 +8,14 @@
       app
       elevation="0"
     >
-      <v-toolbar-title class="ml-0 pl-4">
+      <v-toolbar-title>
         <nuxt-link style="text-decoration: none" to="/">
-          <img src="/logo.png" style="height: 30px" alt="hyperpunks logo" />
+          <img
+            src="/logo.png"
+            class="mt-5"
+            style="height: 60px"
+            alt="hyperpunks logo"
+          />
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>

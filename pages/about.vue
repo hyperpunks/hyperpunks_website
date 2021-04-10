@@ -1,5 +1,5 @@
 <template>
- <iframe class="aligncenter" src="https://player.vimeo.com/video/534832934" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>    
+ <iframe class="mt-5" justify="center" align="center" src="https://player.vimeo.com/video/534832934" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>    
   <v-row class="mt-5" justify="center" align="center">
     <v-col cols="12" sm="8" md="6">
       <div class="text-center">

@@ -45,8 +45,7 @@
             <v-spacer />
             <section v-if="itemPriceETH && !isOwned">
               <v-spacer></v-spacer>
-              <span class="iconify" data-icon="mdi-ethereum" data-inline="false" style="color: red;"></span> 
-              <v-icon right>mdi-ethereum</v-icon>
+              <v-icon color="red" right>mdi-ethereum</v-icon>
               <span class="body-1">{{ itemPriceETH }}</span>
               <v-btn
                 width="150px"

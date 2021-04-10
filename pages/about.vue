@@ -1,8 +1,8 @@
 <template>
   <v-row class="mt-5" justify="center" align="center">
-   <iframe class="aligncenter" src="https://player.vimeo.com/video/534832934" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>    
     <v-col cols="12" sm="8" md="6">
       <div class="text-center">
+         <iframe class="aligncenter" src="https://player.vimeo.com/video/534832934" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>    
         Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut doloremque
         fugiat dolorem eligendi consequatur quas ab, ducimus voluptatum iure
         mollitia modi, dolorum delectus accusamus aspernatur ipsa temporibus

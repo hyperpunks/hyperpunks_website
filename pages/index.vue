@@ -14,7 +14,6 @@
         x-large
         class="mb-2"
         input
-        @keyup.enter.native="searchForToken()"
         @click="searchForToken()"
       >
         GO

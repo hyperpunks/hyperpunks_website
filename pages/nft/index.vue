@@ -99,7 +99,7 @@
 
         <v-card-actions v-if="isOwned">
           <v-spacer></v-spacer>
-          <span class="title orange--text">this hyperpunk is sold</span>
+          <span class="title orange--text">This HyperPunk is SOLD</span>
         </v-card-actions>
       </v-card>
     </v-flex>

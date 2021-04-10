@@ -183,11 +183,14 @@ export default {
             },
             {
               title:
-                'programmatically generated characters, with their attributes,',
+                'programmatically generated characters, with their',
             },
             {
               title:
-                'brought to the 3rd dimension and immortalized on the Ethereum blockchain,',
+                'attributes brought to the 3rd dimension and',
+            },
+            title:
+                'immortalized on the Ethereum blockchain',
             },
             {
               title: 'Only 10000 hyperpunks will exist',

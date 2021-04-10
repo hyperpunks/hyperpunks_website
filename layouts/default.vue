@@ -22,7 +22,7 @@
       <v-btn to="/about" class="ma-2" text>about</v-btn>
       <v-btn to="/ar" class="ma-2" text>ar</v-btn>
       <v-btn
-        href="https://twitter.com/aantonop"
+        href="https://twitter.com/HyperPunks_NFT"
         target="_blank"
         fab
         text

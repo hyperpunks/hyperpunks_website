@@ -161,7 +161,7 @@ export default {
 
       this.infoItems = [
         {
-          action: color="red" 'mdi-information-outline',
+          action: 'mdi-information-outline',
           items: [
             {
               title: 'Contract: ' + CONTRACT_ADDR,

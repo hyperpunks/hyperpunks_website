@@ -5,7 +5,7 @@
         AR Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut
         doloremque fugiat dolorem eligendi consequatur quas ab, ducimus
         voluptatum iure mollitia modi, dolorum delectus accusamus aspernatur
-        ipsa temporibus libero, pariatur sapiente?
+        ipsa temporibus libero, pariatur
       </div>
     </v-col>
   </v-row>

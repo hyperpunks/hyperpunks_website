@@ -13,6 +13,7 @@
         color="#450302"
         x-large
         class="mb-2"
+        input v-on:keyup.enter="searchForToken()"
         @click="searchForToken()"
       >
         GO

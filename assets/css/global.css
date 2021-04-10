@@ -83,3 +83,8 @@ tr:hover {
 [v-cloak]::before {
   content: ' ';
 }
+
+.theme--dark.v-input input,
+.theme--dark.v-input textarea {
+  color: #ea201c !important;
+}

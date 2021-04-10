@@ -3,7 +3,7 @@
     <v-row align="center" style="margin-top: 60px" justify="center">
       <v-text-field
         v-model="tokenID"
-        class="pt-5 redtext ma-1"
+        class="pt-5 ma-1 form-input"
         style="max-width: 600px"
         placeholder="*Search a number between 0 - 9999"
         solo
@@ -13,7 +13,8 @@
         color="#450302"
         x-large
         class="mb-2"
-        input v-on:keyup.enter="searchForToken()"
+        input
+        @keyup.enter.native="searchForToken()"
         @click="searchForToken()"
       >
         GO

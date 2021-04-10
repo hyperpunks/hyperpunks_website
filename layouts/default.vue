@@ -83,8 +83,6 @@ export default {
       window.open(url, '_blank')
     },
     async metamaskButtonClicked() {
-      console.log('clicking metamask')
-
       if (window.ethereum) {
         await window.ethereum.enable()
         this.ethers = new ethers.providers.Web3Provider(window.ethereum)

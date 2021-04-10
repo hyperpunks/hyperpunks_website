@@ -100,7 +100,7 @@
 import { mapState } from 'vuex'
 import '@google/model-viewer/dist/model-viewer'
 import { ethers } from 'ethers'
-import { CONTRACT_ADDR } from '../../constants'
+import { CONTRACT_ADDR, RPC_PROVIDER, NETWORK_ID } from '../../constants'
 import { ERC1155_ABI } from '../../erc1155_abi'
 const EthersUtils = require('ethers').utils
 
@@ -139,11 +139,10 @@ export default {
     this.id = this.$route.query.id
     this.contractAddress = CONTRACT_ADDR
     if (!window.ethereum) {
-      console.log('NO WINDOW ETH DETECTED!')
       this.provider = 'not_web3'
       this.ethers = new ethers.providers.JsonRpcProvider(
-        'https://rinkeby.infura.io/v3/870526d757ed4ab29be2c48bbc625e05',
-        4
+        RPC_PROVIDER,
+        NETWORK_ID
       )
     } else {
       this.provider = 'web3'
@@ -167,7 +166,6 @@ export default {
     async loadContract() {
       if (this.provider === 'web3') {
         this.signer = this.ethers.getSigner()
-
         this.contract = new ethers.Contract(
           CONTRACT_ADDR,
           ERC1155_ABI,

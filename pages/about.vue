@@ -1,16 +1,27 @@
 <template>
- <iframe class="aligncenter" src="https://player.vimeo.com/video/534832934" width="640" height="360" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen>
-  <v-row class="mt-5" justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <div class="text-center">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut doloremque
-        fugiat dolorem eligendi consequatur quas ab, ducimus voluptatum iure
-        mollitia modi, dolorum delectus accusamus aspernatur ipsa temporibus
-        libero, pariatur sapiente?
-      </div>
-    </v-col>
-  </v-row>
- </iframe>
+  <v-container>
+    <v-row justify="center" align="center">
+      <v-col cols="6">
+        <iframe
+          class="aligncenter"
+          src="https://player.vimeo.com/video/534832934"
+          width="640"
+          height="296"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        <div class="ma-5 headline text-center" align="center">HyperPunks</div>
+        <div class="ma-5 darkred text-center">
+          10,000 unique collectible 3D NFTs with proof of ownership stored on
+          the Ethereum blockchain. HyperPunks pays homage to what came before
+          and pushes the boundaries of what an NFT could be. Built on the
+          ERC1155 standard, compatible with all secondary marketplaces like
+          OpenSea.
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

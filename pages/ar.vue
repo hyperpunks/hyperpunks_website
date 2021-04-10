@@ -1,16 +1,28 @@
 <template>
- 
-  <v-row class="mt-5" justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <iframe class="aligncenter" src="https://player.vimeo.com/video/534823039" width="640" height="296" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>    
-       <div class="text-center">
-        AR Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aut
-        doloremque fugiat dolorem eligendi consequatur quas ab, ducimus
-        voluptatum iure mollitia modi, dolorum delectus accusamus aspernatur
-        ipsa temporibus libero, pariatur
-      </div>
-    </v-col>
-  </v-row>
+  <v-container>
+    <v-row justify="center" align="center">
+      <v-col cols="6">
+        <iframe
+          class="aligncenter"
+          src="https://player.vimeo.com/video/534823039"
+          width="640"
+          height="296"
+          frameborder="0"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        <div class="ma-5 headline text-center" align="center">
+          Augmented Reality
+        </div>
+        <div class="ma-5 darkred text-center">
+          Coming Soon. Get read for seeing your punks in the real world...
+        </div>
+        <div class="ma-5 darkred text-center">
+          *We do not retain any royalties from the resale of the NFTs.
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

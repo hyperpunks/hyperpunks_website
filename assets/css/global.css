@@ -16,6 +16,10 @@
   color: #ea201c;
 }
 
+.toasted {
+  font-family: 'Press Start 2P', cursive !important;
+}
+
 .redtext {
   font-family: 'Press Start 2P', cursive !important;
   color: #ea201c;
@@ -27,7 +31,7 @@
 }
 
 .darkred {
-  color: #450302;
+  color: #450302 !important;
 }
 
 .darkredbg {

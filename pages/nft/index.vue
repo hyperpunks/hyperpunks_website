@@ -43,10 +43,12 @@
           <v-row align="center" style="margin-top: 60px">
             <span class="title">{{ nft.name }}</span>
             <v-spacer />
-            <section v-if="itemPriceETH && !isOwned">
+            <section v-if="!isOwned">
               <v-spacer></v-spacer>
-              <v-icon color="red" right>mdi-ethereum</v-icon>
-              <span class="body-1">{{ itemPriceETH }}</span>
+              <v-icon v-if="itemPriceETH" color="red" right
+                >mdi-ethereum</v-icon
+              >
+              <span v-if="itemPriceETH" class="body-1">{{ itemPriceETH }}</span>
               <v-btn
                 width="150px"
                 elevation="0"
@@ -72,29 +74,18 @@
         </v-card-text>
 
         <v-card-text>
-          <v-list dense color="transparent">
-            <v-list-group
-              v-for="item in infoItems"
-              :key="item.title"
-              v-model="item.active"
-              :prepend-icon="item.action"
-              no-action
-            >
-              <template #activator>
-                <v-list-item-content>
-                  <v-list-item-title v-text="item.title"></v-list-item-title>
-                </v-list-item-content>
-              </template>
-
-              <v-list-item v-for="child in item.items" :key="child.title">
-                <v-list-item-content>
-                  <v-list-item-subtitle
-                    v-text="child.title"
-                  ></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-group>
-          </v-list>
+          <p class="redtext">Token ID: {{ id }}</p>
+          <p v-if="contractAddress" class="redtext">
+            Contract: {{ contractAddress }}
+          </p>
+          <p class="redtext">Blockchain: Ethereum</p>
+          <p class="redtext">
+            10,000 unique collectible 3D NFTs with proof of ownership stored on
+            the Ethereum blockchain. HyperPunks pays homage to what came before
+            and pushes the boundaries of what an NFT could be. Built on the
+            ERC1155 standard, compatible with all secondary marketplaces like
+            OpenSea.
+          </p>
         </v-card-text>
 
         <v-card-actions v-if="isOwned">
@@ -120,13 +111,14 @@ export default {
       id: null,
       tokenID: null,
       contract: null,
+      contractAddress: null,
       itemPriceETH: null,
       itemPriceWei: null,
       nft: null,
       isOwned: false,
       ethers: null,
       signer: null,
-      infoItems: [],
+      provider: null,
     }
   },
   computed: {
@@ -138,7 +130,6 @@ export default {
   watch: {
     selectedAddress(val, oldVal) {
       if (val.length > 0) {
-        this.ethers = new ethers.providers.Web3Provider(window.ethereum)
         this.loadContract()
       }
     },
@@ -146,59 +137,25 @@ export default {
 
   mounted() {
     this.id = this.$route.query.id
+    this.contractAddress = CONTRACT_ADDR
+    if (!window.ethereum) {
+      console.log('NO WINDOW ETH DETECTED!')
+      this.provider = 'not_web3'
+      this.ethers = new ethers.providers.JsonRpcProvider(
+        'https://rinkeby.infura.io/v3/870526d757ed4ab29be2c48bbc625e05',
+        4
+      )
+    } else {
+      this.provider = 'web3'
+      this.ethers = new ethers.providers.Web3Provider(window.ethereum)
+    }
     this.init(this.id)
   },
   methods: {
     init(theID) {
       this.isOwned = false
       this.loadNFT(theID)
-      if (window.ethereum) {
-        this.ethers = new ethers.providers.Web3Provider(window.ethereum)
-        this.loadContract()
-      } else {
-        console.warn('window.ethereum NOT detected!')
-      }
-
-      this.infoItems = [
-        {
-          action: 'mdi-information-outline',
-          items: [
-            {
-              title: 'Contract: ' + CONTRACT_ADDR,
-            },
-            {
-              title: 'Token ID: ' + theID,
-            },
-            {
-              title: 'Blockchain: Ethereum',
-            },
-          ],
-          title: 'Chain Info',
-        },
-        {
-          action: 'mdi-heart',
-          items: [
-            {
-              title: 'HyperPunks, augmented reality NFTs. 10,000 ',
-            },
-            {
-              title:
-                'programmatically generated characters, with their',
-            },
-            {
-              title:
-                'attributes brought to the 3rd dimension and',
-            },
-            title:
-                'immortalized on the Ethereum blockchain',
-            },
-            {
-              title: 'Only 10000 hyperpunks will exist',
-            },
-          ],
-          title: 'About Collection',
-        },
-      ]
+      this.loadContract()
     },
     loadNFT(id) {
       this.$axios
@@ -208,12 +165,22 @@ export default {
         })
     },
     async loadContract() {
-      this.signer = this.ethers.getSigner()
-      this.contract = new ethers.Contract(
-        CONTRACT_ADDR,
-        ERC1155_ABI,
-        this.signer
-      )
+      if (this.provider === 'web3') {
+        this.signer = this.ethers.getSigner()
+
+        this.contract = new ethers.Contract(
+          CONTRACT_ADDR,
+          ERC1155_ABI,
+          this.signer
+        )
+      } else {
+        this.contract = new ethers.Contract(
+          CONTRACT_ADDR,
+          ERC1155_ABI,
+          this.ethers
+        )
+      }
+
       this.itemPriceWei = await this.contract.getItemPrice()
       this.itemPriceETH = EthersUtils.formatEther(this.itemPriceWei)
 
@@ -224,6 +191,10 @@ export default {
       }
     },
     async buyNow() {
+      const res = await this.checkMetamaskConnected()
+      if (!res) {
+        return
+      }
       const overrides = { value: this.itemPriceWei, gasLimit: 120000 }
 
       try {
@@ -246,6 +217,33 @@ export default {
       this.nft.animation_url = null
       this.id = this.tokenID
       this.init(this.tokenID)
+    },
+    async checkMetamaskConnected() {
+      if (window.ethereum) {
+        await window.ethereum.enable()
+        this.ethers = new ethers.providers.Web3Provider(window.ethereum)
+
+        this.signer = this.ethers.getSigner()
+        this.account = await this.signer.getAddress()
+        this.balance = await this.signer.getBalance()
+        this.ethBalance = await ethers.utils.formatEther(this.balance)
+        this.signer = this.ethers.getSigner()
+        const addr = await this.signer.getAddress()
+        this.walletBtnText =
+          addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
+
+        const chainId = this.ethers._network.chainId
+        this.$store.commit('setSelectedAddress', addr)
+        this.$store.commit('setNetworkID', Number(chainId))
+
+        if (chainId !== 1) {
+          this.showNonMainnetWarning = true
+        }
+        return true
+      } else {
+        this.$router.push('/other/install_metamask')
+        return false
+      }
     },
   },
 }

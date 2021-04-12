@@ -174,20 +174,11 @@ export default {
         })
     },
     async loadContract() {
-      if (this.provider === 'web3') {
-        this.signer = this.ethers.getSigner()
-        this.contract = new ethers.Contract(
-          CONTRACT_ADDR,
-          ERC1155_ABI,
-          this.signer
-        )
-      } else {
-        this.contract = new ethers.Contract(
-          CONTRACT_ADDR,
-          ERC1155_ABI,
-          this.ethers
-        )
-      }
+      this.contract = new ethers.Contract(
+        CONTRACT_ADDR,
+        ERC1155_ABI,
+        this.ethers
+      )
 
       this.itemPriceWei = await this.contract.getItemPrice()
       this.itemPriceETH = EthersUtils.formatEther(this.itemPriceWei)
@@ -233,8 +224,6 @@ export default {
           addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
 
         const chainId = this.ethers._network.chainId
-        this.$store.commit('setSelectedAddress', addr)
-        this.$store.commit('setNetworkID', Number(chainId))
 
         if (chainId !== 1) {
           this.showNonMainnetWarning = true

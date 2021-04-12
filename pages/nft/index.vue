@@ -240,7 +240,7 @@ export default {
     },
     viewOnOpenSea() {
       const url =
-        'https://testnets.opensea.io/assets/' + CONTRACT_ADDR + '/' + this.id
+        'https://testnets.opensea.io/assets/' + this.contractAddress + '/' + this.id
       window.open(url, '_blank')
     },
   },

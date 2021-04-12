@@ -61,7 +61,14 @@
                 >buy</v-btn
               >
 
-              <span v-if="!itemPriceETH">please connect to metamask</span>
+              <v-btn
+                v-if="!itemPriceETH"
+                width="150px"
+                elevation="0"
+                class="ml-5 redtext"
+                @click="buyNow()"
+                >buy</v-btn
+              >
             </section>
 
             <section v-if="isOwned">

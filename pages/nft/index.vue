@@ -5,7 +5,7 @@
         <v-text-field
           v-model="tokenID"
           class="pt-5 redtext ma-1"
-          style="max-width: 600px"
+          style="max-width: 900px"
           placeholder="*Search a number between 0 - 9999"
           solo
         ></v-text-field>

@@ -3,7 +3,6 @@
     <v-app-bar
       v-if="!countdownFinished"
       color="transparent"
-      fixed
       clipped-left
       app
       elevation="0"
@@ -37,12 +36,7 @@
     <v-main>
       <nuxt />
     </v-main>
-    <v-footer
-      v-if="showNonMainnetWarning"
-      :fixed="fixed"
-      color="transparent"
-      app
-    >
+    <v-footer v-if="showNonMainnetWarning" color="transparent" app>
       <v-card class="flex" flat>
         <v-card-text class="red white--text text-center">
           <strong>Warning!</strong> Not connected to Ethereum Mainnet (network
@@ -54,13 +48,14 @@
 </template>
 <script>
 import { ethers } from 'ethers'
-import { DEADLINE } from '../constants'
+import { DEADLINE, RPC_PROVIDER, NETWORK_ID } from '../constants'
 export default {
   auth: false,
   data() {
     return {
       walletBtnText: 'CONNECT WALLET',
       ethers: null,
+      provider: null,
       showNonMainnetWarning: false,
       countdownFinished: false,
     }
@@ -68,39 +63,62 @@ export default {
   mounted() {
     const t = Date.parse(DEADLINE) - Date.parse(new Date())
     if (t > 0) {
-      this.countdownFinished = true // todo make true!
+      this.countdownFinished = true
       this.$router.push('/countdown')
-      // console.log('uncomment this!')
     }
+    this.rpcProviderInit()
   },
   methods: {
+    async rpcProviderInit() {
+      if (!window.ethereum) {
+        this.provider = 'not_web3'
+        this.ethers = new ethers.providers.JsonRpcProvider(
+          RPC_PROVIDER,
+          NETWORK_ID
+        )
+        return
+      }
+
+      this.provider = 'web3'
+      this.ethers = new ethers.providers.Web3Provider(window.ethereum, 'any')
+      this.ethers.on('network', (newNetwork, oldNetwork) => {
+        if (oldNetwork) {
+          window.location.reload()
+        }
+      })
+
+      this.signer = this.ethers.getSigner()
+      this.account = await this.signer.getAddress()
+      this.balance = await this.signer.getBalance()
+      this.ethBalance = await ethers.utils.formatEther(this.balance)
+      this.signer = this.ethers.getSigner()
+      const addr = await this.signer.getAddress()
+      this.walletBtnText =
+        addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
+
+      window.ethereum.on('accountsChanged', (accounts) => {
+        if (accounts.length < 1) return
+
+        this.walletBtnText =
+          accounts[0].substr(0, 7) +
+          '...' +
+          accounts[0].substr(accounts[0].length - 5, accounts[0].length)
+      })
+
+      const { chainId } = await this.ethers.getNetwork()
+      if (chainId !== 1) {
+        this.showNonMainnetWarning = true
+      }
+    },
     goToUrl(url) {
       this.$router.push(url)
     },
     goToExternalUrl(url) {
       window.open(url, '_blank')
     },
-    async metamaskButtonClicked() {
+    metamaskButtonClicked() {
       if (window.ethereum) {
-        await window.ethereum.enable()
-        this.ethers = new ethers.providers.Web3Provider(window.ethereum)
-
-        this.signer = this.ethers.getSigner()
-        this.account = await this.signer.getAddress()
-        this.balance = await this.signer.getBalance()
-        this.ethBalance = await ethers.utils.formatEther(this.balance)
-        this.signer = this.ethers.getSigner()
-        const addr = await this.signer.getAddress()
-        this.walletBtnText =
-          addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
-
-        const chainId = this.ethers._network.chainId
-        this.$store.commit('setSelectedAddress', addr)
-        this.$store.commit('setNetworkID', Number(chainId))
-
-        if (chainId !== 1) {
-          this.showNonMainnetWarning = true
-        }
+        this.rpcProviderInit()
       } else {
         this.$router.push('/other/install_metamask')
       }

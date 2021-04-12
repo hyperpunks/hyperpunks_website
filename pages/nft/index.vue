@@ -1,24 +1,26 @@
 <template>
   <v-layout align-center justify-center>
     <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
-      <v-row align="center" style="margin-top: 60px" justify="center">
-        <v-text-field
-          v-model="tokenID"
-          class="pt-5 redtext ma-1"
-          style="max-width: 900px"
-          placeholder="*Search a number between 0 - 9999"
-          solo
-        ></v-text-field>
-        <v-btn
-          style="max-height: 48px"
-          color="#450302"
-          x-large
-          class="mb-2"
-          @click="searchForToken()"
-        >
-          GO
-        </v-btn>
-      </v-row>
+      <form @submit.prevent="loadNewURI()">
+        <v-row align="center" style="margin-top: 60px" justify="center">
+          <v-text-field
+            v-model="tokenID"
+            class="pt-5 redtext ma-1"
+            style="max-width: 900px"
+            placeholder="*Search a number between 0 - 9999"
+            solo
+          ></v-text-field>
+          <v-btn
+            style="max-height: 48px"
+            color="#450302"
+            x-large
+            class="mb-2"
+            @click="loadNewURI()"
+          >
+            GO
+          </v-btn>
+        </v-row>
+      </form>
 
       <v-card elevation="0" class="pa-5">
         <v-img
@@ -39,7 +41,7 @@
           preload
         ></model-viewer>
 
-        <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
+        <v-flex xs12 sm8 md6 ma-5 style="max-width: 900px">
           <v-row align="center" style="margin-top: 60px">
             <span class="title">{{ nft.name }}</span>
             <v-spacer />
@@ -49,12 +51,21 @@
                 >mdi-ethereum</v-icon
               >
               <span v-if="itemPriceETH" class="body-1">{{ itemPriceETH }}</span>
+
               <v-btn
                 width="150px"
                 elevation="0"
                 class="ml-5 redtext"
                 @click="buyNow()"
                 >buy</v-btn
+              >
+            </section>
+
+            <section v-if="isOwned">
+              <span
+                style="padding: 8px; border: 1px solid grey"
+                class="title orange--text"
+                >SOLD</span
               >
             </section>
           </v-row>
@@ -87,11 +98,6 @@
             OpenSea.
           </p>
         </v-card-text>
-
-        <v-card-actions v-if="isOwned">
-          <v-spacer></v-spacer>
-          <span class="title orange--text">This HyperPunk is SOLD</span>
-        </v-card-actions>
       </v-card>
     </v-flex>
   </v-layout>
@@ -148,12 +154,12 @@ export default {
       this.provider = 'web3'
       this.ethers = new ethers.providers.Web3Provider(window.ethereum)
     }
-    this.init(this.id)
+    this.initialize()
   },
   methods: {
-    init(theID) {
+    initialize() {
       this.isOwned = false
-      this.loadNFT(theID)
+      this.loadNFT(this.id)
       this.loadContract()
     },
     loadNFT(id) {
@@ -208,14 +214,6 @@ export default {
         }
       }
     },
-    searchForToken() {
-      if (this.tokenID == null) {
-        return
-      }
-      this.nft.animation_url = null
-      this.id = this.tokenID
-      this.init(this.tokenID)
-    },
     async checkMetamaskConnected() {
       if (window.ethereum) {
         await window.ethereum.enable()
@@ -242,6 +240,9 @@ export default {
         this.$router.push('/other/install_metamask')
         return false
       }
+    },
+    loadNewURI() {
+      window.location.replace('/nft?id=' + this.tokenID)
     },
   },
 }

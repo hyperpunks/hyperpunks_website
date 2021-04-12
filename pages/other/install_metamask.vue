@@ -1,6 +1,6 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md6 ma-5 style="max-width: 600px">
+    <v-flex xs12 sm8 md6 ma-5 style="max-width: 1000px">
       <v-card elevation="0" class="pa-5">
         <v-card-title class="error white--text"
           >Metamask is needed to run this application</v-card-title

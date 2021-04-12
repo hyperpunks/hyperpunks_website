@@ -1,24 +1,26 @@
 <template>
   <v-container>
-    <v-row align="center" style="margin-top: 60px" justify="center">
-      <v-text-field
-        v-model="tokenID"
-        class="pt-5 ma-1 form-input"
-        style="max-width: 600px"
-        placeholder="*Search a number between 0 - 9999"
-        solo
-      ></v-text-field>
-      <v-btn
-        style="max-height: 48px"
-        color="#450302"
-        x-large
-        class="mb-2"
-        input
-        @click="searchForToken()"
-      >
-        GO
-      </v-btn>
-    </v-row>
+    <form @submit.prevent="searchForToken">
+      <v-row align="center" style="margin-top: 60px" justify="center">
+        <v-text-field
+          v-model="tokenID"
+          class="pt-5 ma-1 form-input"
+          style="max-width: 600px"
+          placeholder="*Search a number between 0 - 9999"
+          solo
+        ></v-text-field>
+        <v-btn
+          style="max-height: 48px"
+          color="#450302"
+          x-large
+          class="mb-2"
+          input
+          @click="searchForToken()"
+        >
+          GO
+        </v-btn>
+      </v-row>
+    </form>
   </v-container>
 </template>
 

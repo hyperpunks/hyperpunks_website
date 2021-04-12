@@ -18,6 +18,7 @@ module.exports = {
     'no-console': 'off',
     camelcase: 'off',
     indent: 'off',
+    'spaced-comment': ['error', 'never'],
   },
   globals: {
     window: true,

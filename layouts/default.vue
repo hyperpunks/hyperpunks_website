@@ -19,8 +19,6 @@
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <v-btn to="/about" class="ma-2" text>about</v-btn>
-      <v-btn to="/ar" class="ma-2" text>ar</v-btn>
       <v-btn
         href="https://twitter.com/HyperPunks_NFT"
         target="_blank"
@@ -70,9 +68,9 @@ export default {
   mounted() {
     const t = Date.parse(DEADLINE) - Date.parse(new Date())
     if (t > 0) {
-      this.countdownFinished = false // todo make true!
-      // this.$router.push('/countdown')
-      console.log('uncomment this!')
+      this.countdownFinished = true // todo make true!
+      this.$router.push('/countdown')
+      // console.log('uncomment this!')
     }
   },
   methods: {

@@ -31,7 +31,7 @@
         <model-viewer
           v-if="nft.animation_url"
           data-js-focus-visible
-          style="width: 600px; height: 600px"
+          style="width: 900px; height: 600px"
           :src="nft.animation_url"
           :alt="nft.description"
           auto-rotate

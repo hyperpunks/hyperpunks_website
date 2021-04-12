@@ -35,8 +35,8 @@ export default {
     const t = Date.parse(DEADLINE) - Date.parse(new Date())
     if (t > 0) {
       this.countdownFinished = true
-      // this.$router.push('/countdown')
-      console.warn('UNCOMMENT THE ABOVE!')
+      this.$router.push('/countdown')
+      // console.warn('UNCOMMENT THE ABOVE!')
     }
   },
   methods: {

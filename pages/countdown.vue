@@ -78,7 +78,7 @@ export default {
         }
         setTimeout(this.countdown, this.speed)
       } else {
-        this.$router.push('/')
+        window.location.href = 'https://hyperpunks.com'
         this.currentTime = null
       }
     },

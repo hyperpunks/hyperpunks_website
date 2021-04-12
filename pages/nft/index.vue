@@ -2,7 +2,7 @@
   <v-layout align-center justify-center>
     <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
       <form @submit.prevent="loadNewURI()">
-        <v-row align="center" style="margin-top: 60px" justify="center">
+        <v-row align="center" style="margin-top: 10px" justify="center">
           <v-text-field
             v-model="tokenID"
             class="pt-5 redtext ma-1"
@@ -190,6 +190,14 @@ export default {
       }
     },
     async buyNow() {
+      this.ethers = new ethers.providers.Web3Provider(window.ethereum)
+      this.signer = this.ethers.getSigner()
+      this.contract = new ethers.Contract(
+        CONTRACT_ADDR,
+        ERC1155_ABI,
+        this.signer
+      )
+
       const res = await this.checkMetamaskConnected()
       if (!res) {
         return
@@ -209,6 +217,14 @@ export default {
         }
       }
     },
+    searchForToken() {
+      if (this.tokenID == null) {
+        return
+      }
+      this.nft.animation_url = null
+      this.id = this.tokenID
+      this.init(this.tokenID)
+    },
     async checkMetamaskConnected() {
       if (window.ethereum) {
         await window.ethereum.enable()
@@ -224,6 +240,8 @@ export default {
           addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
 
         const chainId = this.ethers._network.chainId
+        this.$store.commit('setSelectedAddress', addr)
+        this.$store.commit('setNetworkID', Number(chainId))
 
         if (chainId !== 1) {
           this.showNonMainnetWarning = true

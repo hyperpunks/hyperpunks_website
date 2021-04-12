@@ -103,7 +103,6 @@
   </v-layout>
 </template>
 <script>
-import { mapState } from 'vuex'
 import '@google/model-viewer/dist/model-viewer'
 import { ethers } from 'ethers'
 import { CONTRACT_ADDR, RPC_PROVIDER, NETWORK_ID } from '../../constants'
@@ -127,20 +126,6 @@ export default {
       provider: null,
     }
   },
-  computed: {
-    ...mapState(['selectedAddress']),
-    someComputedLocalState() {
-      return this.selectedAddress
-    },
-  },
-  watch: {
-    selectedAddress(val, oldVal) {
-      if (val.length > 0) {
-        this.loadContract()
-      }
-    },
-  },
-
   mounted() {
     this.id = this.$route.query.id
     this.contractAddress = CONTRACT_ADDR

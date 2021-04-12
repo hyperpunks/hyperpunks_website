@@ -28,6 +28,14 @@
         <v-icon>mdi-twitter</v-icon>
       </v-btn>
 
+      <v-btn
+        text
+        fab
+        @click="goToExternalUrl('https://medium.com/@hyperpunks')"
+      >
+        <img src="/medium.svg" width="30" alt="hyperpunks blog" />
+      </v-btn>
+
       <v-btn class="ma-2" text @click="metamaskButtonClicked()">{{
         walletBtnText
       }}</v-btn>

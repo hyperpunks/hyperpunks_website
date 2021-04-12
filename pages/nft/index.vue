@@ -62,11 +62,20 @@
             </section>
 
             <section v-if="isOwned">
-              <span
-                style="padding: 8px; border: 1px solid grey"
-                class="title orange--text"
-                >SOLD</span
-              >
+              <v-row no-gutters>
+                <v-col cols="6">
+                  <span
+                    style="padding: 6px; border: 1px solid grey"
+                    class="title orange--text"
+                    >SOLD</span
+                  >
+                </v-col>
+                <v-col cols="6">
+                  <v-btn class="mb-2" text @click="viewOnOpenSea()"
+                    >view on opensea
+                  </v-btn>
+                </v-col>
+              </v-row>
             </section>
           </v-row>
         </v-flex>
@@ -228,6 +237,9 @@ export default {
     },
     loadNewURI() {
       window.location.replace('/nft?id=' + this.tokenID)
+    },
+    viewOnOpenSea() {
+      console.log('viewing in opensea')
     },
   },
 }

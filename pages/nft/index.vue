@@ -239,7 +239,9 @@ export default {
       window.location.replace('/nft?id=' + this.tokenID)
     },
     viewOnOpenSea() {
-      console.log('viewing in opensea')
+      const url =
+        'https://testnets.opensea.io/assets/' + CONTRACT_ADDR + '/' + this.id
+      window.open(url, '_blank')
     },
   },
 }

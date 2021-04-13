@@ -1,11 +1,10 @@
 <template>
   <v-container>
-    <form @submit.prevent="searchForToken">
-      <v-row align="center" style="margin-top: 60px" justify="center">
+    <form class="search-form" @submit.prevent="searchForToken">
+      <div class="search-form__row">
         <v-text-field
           v-model="tokenID"
           class="pt-5 ma-1 form-input"
-          style="max-width: 600px"
           placeholder="*Search a number between 0 - 9999"
           solo
         ></v-text-field>
@@ -19,7 +18,7 @@
         >
           GO
         </v-btn>
-      </v-row>
+      </div>
     </form>
   </v-container>
 </template>
@@ -38,7 +37,6 @@ export default {
     if (t > 0) {
       this.countdownFinished = true
       this.$router.push('/countdown')
-      // console.warn('UNCOMMENT THE ABOVE!')
     }
   },
   methods: {

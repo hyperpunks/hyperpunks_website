@@ -1,11 +1,11 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex v-if="nft" xs12 sm8 md6 ma-5 style="max-width: 900px">
-      <form @submit.prevent="loadNewURI()">
-        <v-row align="center" style="margin-top: 10px" justify="center">
+    <v-flex v-if="nft" xs12 sm8 md6 ma-5 class="search-form__wrap" style="">
+      <form class="search-form" @submit.prevent="loadNewURI()">
+        <div class="search-form__row">
           <v-text-field
             v-model="tokenID"
-            class="pt-5 redtext ma-1"
+            class="pt-5 redtext ma-1 form-input"
             style="max-width: 900px"
             placeholder="*Search a number between 0 - 9999"
             solo
@@ -19,10 +19,10 @@
           >
             GO
           </v-btn>
-        </v-row>
+        </div>
       </form>
 
-      <v-card elevation="0" class="pa-5">
+      <v-card elevation="0" class="model-block">
         <v-img
           v-if="!nft.animation_url"
           :src="nft.image"
@@ -33,7 +33,8 @@
         <model-viewer
           v-if="nft.animation_url"
           data-js-focus-visible
-          style="width: 900px; height: 600px"
+          class="model-viewer"
+          style=""
           :src="nft.animation_url"
           :alt="nft.description"
           auto-rotate
@@ -41,7 +42,7 @@
           preload
         ></model-viewer>
 
-        <v-flex xs12 sm8 md6 ma-5 style="max-width: 900px">
+        <v-flex xs12 sm8 md6 class="heading-wrap" style="max-width: 900px">
           <v-row align="center" style="margin-top: 60px">
             <span class="title">{{ nft.name }}</span>
             <v-spacer />

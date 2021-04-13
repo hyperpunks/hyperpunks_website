@@ -2,6 +2,7 @@
   <v-app dark>
     <v-app-bar
       v-if="!countdownFinished"
+      class="app-nav"
       color="transparent"
       clipped-left
       app
@@ -11,7 +12,7 @@
         <nuxt-link style="text-decoration: none" to="/">
           <img
             src="/logo.png"
-            class="mt-5"
+            class="logo-img"
             style="height: 60px"
             alt="hyperpunks logo"
           />
@@ -84,10 +85,13 @@ export default {
           RPC_PROVIDER,
           NETWORK_ID
         )
+        console.log('this.provider :>> ', this.provider)
         return
       }
 
+      await window.ethereum.enable()
       this.provider = 'web3'
+      console.log('this.provider :>> ', this.provider)
       this.ethers = new ethers.providers.Web3Provider(window.ethereum, 'any')
       this.ethers.on('network', (newNetwork, oldNetwork) => {
         if (oldNetwork) {

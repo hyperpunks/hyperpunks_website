@@ -1,8 +1,8 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md6 ma-5 style="max-width: 1000px">
-      <v-card elevation="0" class="pa-5">
-        <v-card-title class="error white--text"
+  <v-layout align-center justify-center class="metamask-info-template">
+    <v-flex xs12 sm8 md6 class="metamask-info-template__row">
+      <v-card elevation="0" class="metamask-info-template__card">
+        <v-card-title class="error white--text quick-font-fix-for-mobile"
           >Metamask is needed to run this application</v-card-title
         >
         <v-card-text>
@@ -51,3 +51,9 @@ export default {
   mounted() {},
 }
 </script>
+
+<style>
+.v-card__title.quick-font-fix-for-mobile {
+  font-size: 13px;
+}
+</style>

@@ -74,6 +74,7 @@ export default {
     if (t > 0) {
       this.countdownFinished = true
       this.$router.push('/countdown')
+      return
     }
     this.rpcProviderInit()
   },

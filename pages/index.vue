@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="isLoaded">
     <form class="search-form" @submit.prevent="searchForToken">
       <div class="search-form__row">
         <v-text-field
@@ -30,6 +30,8 @@ export default {
   data() {
     return {
       tokenID: '',
+      countdownFinished: false,
+      isLoaded: false,
     }
   },
   mounted() {
@@ -37,7 +39,9 @@ export default {
     if (t > 0) {
       this.countdownFinished = true
       this.$router.push('/countdown')
+      return
     }
+    this.isLoaded = true
   },
   methods: {
     searchForToken() {

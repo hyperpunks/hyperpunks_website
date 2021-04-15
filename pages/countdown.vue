@@ -42,6 +42,26 @@
           <br />
           <span class="countdown-row__title">time is up!</span>
         </section>
+
+        <section style="margin-top: 50px">
+          <v-btn
+            href="https://twitter.com/HyperPunks_NFT"
+            target="_blank"
+            fab
+            text
+            redtext
+          >
+            <v-icon>mdi-twitter</v-icon>
+          </v-btn>
+
+          <v-btn
+            text
+            fab
+            @click="goToExternalUrl('https://medium.com/@hyperpunks')"
+          >
+            <img src="/medium.svg" width="30" alt="hyperpunks blog" />
+          </v-btn>
+        </section>
       </div>
     </v-col>
   </v-row>
@@ -83,6 +103,9 @@ export default {
         window.location.href = 'https://hyperpunks.com'
         this.currentTime = null
       }
+    },
+    goToExternalUrl(url) {
+      window.open(url, '_blank')
     },
   },
 }

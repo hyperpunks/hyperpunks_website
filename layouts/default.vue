@@ -19,10 +19,6 @@
         </nuxt-link>
       </v-toolbar-title>
       <div class="flex-grow-1"></div>
-      <div class="top-links">
-        <nuxt-link to="/" class="margin-right-20"> SEARCH </nuxt-link>
-        <nuxt-link to="/list" class="margin-right-20"> LIST </nuxt-link>
-      </div>
       <v-btn
         href="https://twitter.com/HyperPunks_NFT"
         target="_blank"
@@ -154,9 +150,6 @@ export default {
 .v-navigation-drawer > .list:not(.list--dense) .list__tile {
   font-size: 17px;
 }
-.margin-right-20 {
-  margin-right: 20px;
-}
 .avatar {
   max-width: 75px;
 }
@@ -171,12 +164,5 @@ a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link {
 .v-list-item--active {
   color: #333;
   border-left: 10px solid #ff5722;
-}
-@media screen and (max-width: 756px) {
-  .top-links {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-  }
 }
 </style>

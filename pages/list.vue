@@ -27,7 +27,7 @@ export default {
       contract: null,
       itemsCurrentNumber: 0,
       batchSize: 400,
-      pagesMaxNumber: 25,
+      pagesMaxNumber: 26,
       text: 'loading...',
       ethers: null,
       provider: null,

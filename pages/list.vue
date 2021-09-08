@@ -26,8 +26,8 @@ export default {
       page: 1,
       contract: null,
       itemsCurrentNumber: 0,
-      batchSize: 250,
-      pagesMaxNumber: 40,
+      batchSize: 400,
+      pagesMaxNumber: 25,
       text: 'loading...',
       ethers: null,
       provider: null,
@@ -119,7 +119,7 @@ export default {
   max-width: 1500px;
   text-align: center;
   .items-container {
-    max-width: 800px;
+    max-width: 1210px;
     display: inline-block;
     text-align: left;
     width: 100%;

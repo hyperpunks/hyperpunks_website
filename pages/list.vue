@@ -1,182 +1,153 @@
 <template>
-  <v-app dark>
-    <v-app-bar
-      v-if="!countdownFinished"
-      class="app-nav"
-      color="transparent"
-      clipped-left
-      app
-      elevation="0"
-    >
-      <v-toolbar-title>
-        <nuxt-link style="text-decoration: none" to="/">
-          <img
-            src="/logo.png"
-            class="logo-img"
-            style="height: 60px"
-            alt="hyperpunks logo"
-          />
-        </nuxt-link>
-      </v-toolbar-title>
-      <div class="flex-grow-1"></div>
-      <div class="top-links">
-        <nuxt-link to="/" class="margin-right-20"> SEARCH </nuxt-link>
-        <nuxt-link to="/list" class="margin-right-20"> LIST </nuxt-link>
+  <v-container v-if="isLoaded">
+    <div class="items-container">
+      <div v-for="item in items" class="single-item" :key="item.id">
+        <nuxt-link :class="item.is_sold === true ? 'sold' : ''" :to="item.url">
+          {{ item.id }}</nuxt-link
+        >
       </div>
-      <v-btn
-        href="https://twitter.com/HyperPunks_NFT"
-        target="_blank"
-        fab
-        text
-        redtext
-      >
-        <v-icon>mdi-twitter</v-icon>
-      </v-btn>
-
-      <v-btn
-        text
-        fab
-        @click="goToExternalUrl('https://medium.com/@hyperpunks')"
-      >
-        <img src="/medium.svg" width="30" alt="hyperpunks blog" />
-      </v-btn>
-
-      <v-btn class="ma-2" text @click="metamaskButtonClicked()">{{
-        walletBtnText
-      }}</v-btn>
-    </v-app-bar>
-
-    <v-main>
-      <nuxt />
-    </v-main>
-    <v-footer v-if="showNonMainnetWarning" color="transparent" app>
-      <v-card class="flex" flat>
-        <v-card-text class="red white--text text-center">
-          <strong>Warning!</strong> Not connected to Ethereum Mainnet (network
-          ID: {{ $store.state.networkID }})
-        </v-card-text>
-      </v-card>
-    </v-footer>
-  </v-app>
+      <div class="loading" v-if="loading && text">{{ text }}</div>
+    </div>
+  </v-container>
 </template>
+
 <script>
 import { ethers } from 'ethers'
-import { DEADLINE, RPC_PROVIDER, NETWORK_ID } from '../constants'
+import { CONTRACT_ADDR, RPC_PROVIDER, NETWORK_ID } from '../constants'
+import { ERC1155_ABI } from '../erc1155_abi'
+
 export default {
   auth: false,
   data() {
     return {
-      walletBtnText: 'CONNECT WALLET',
+      items: [],
+      isLoaded: false,
+      loading: true,
+      page: 1,
+      contract: null,
+      itemsCurrentNumber: 0,
+      batchSize: 400,
+      pagesMaxNumber: 25,
+      text: 'loading...',
       ethers: null,
       provider: null,
-      showNonMainnetWarning: false,
-      countdownFinished: false,
     }
   },
   mounted() {
-    const t = Date.parse(DEADLINE) - Date.parse(new Date())
-    if (t > 0) {
-      this.countdownFinished = true
-      this.$router.push('/countdown')
-      return
+    this.contractAddress = CONTRACT_ADDR
+    if (!window.ethereum) {
+      this.provider = 'not_web3'
+      this.ethers = new ethers.providers.JsonRpcProvider(
+        RPC_PROVIDER,
+        NETWORK_ID
+      )
+    } else {
+      this.provider = 'web3'
+      this.ethers = new ethers.providers.Web3Provider(window.ethereum)
     }
-    this.rpcProviderInit()
+    this.contract = new ethers.Contract(CONTRACT_ADDR, ERC1155_ABI, this.ethers)
+    this.getInitialData()
+    this.getNextData()
+    this.isLoaded = true
+  },
+  beforeMount() {
+    //mmm
   },
   methods: {
-    async rpcProviderInit() {
-      if (!window.ethereum) {
-        this.provider = 'not_web3'
-        this.ethers = new ethers.providers.JsonRpcProvider(
-          RPC_PROVIDER,
-          NETWORK_ID
-        )
-        console.log('this.provider :>> ', this.provider)
+    getInitialData() {
+      this.loadData()
+    },
+    getNextData() {
+      window.onscroll = () => {
+        const bottomOfWindow =
+          document.documentElement.scrollTop + window.innerHeight ===
+          document.documentElement.offsetHeight
+        if (bottomOfWindow) {
+          this.loadData()
+        }
+      }
+    },
+    loadData() {
+      this.loading = true
+      if (this.page === this.pagesMaxNumber) {
+        this.text = ''
         return
       }
-
-      await window.ethereum.enable()
-      this.provider = 'web3'
-      console.log('this.provider :>> ', this.provider)
-      this.ethers = new ethers.providers.Web3Provider(window.ethereum, 'any')
-      this.ethers.on('network', (newNetwork, oldNetwork) => {
-        if (oldNetwork) {
-          window.location.reload()
+      const arr = [].concat(this.items)
+      for (
+        let i = (this.page - 1) * this.batchSize,
+          l = this.page * this.batchSize;
+        i < l;
+        i++
+      ) {
+        const item = {
+          id: i,
+          is_sold: false,
+          url: '/nft?id=' + i,
         }
-      })
-
-      this.signer = this.ethers.getSigner()
-      this.account = await this.signer.getAddress()
-      this.balance = await this.signer.getBalance()
-      this.ethBalance = await ethers.utils.formatEther(this.balance)
-      this.signer = this.ethers.getSigner()
-      const addr = await this.signer.getAddress()
-      this.walletBtnText =
-        addr.substr(0, 7) + '...' + addr.substr(addr.length - 5, addr.length)
-
-      window.ethereum.on('accountsChanged', (accounts) => {
-        if (accounts.length < 1) return
-
-        this.walletBtnText =
-          accounts[0].substr(0, 7) +
-          '...' +
-          accounts[0].substr(accounts[0].length - 5, accounts[0].length)
-      })
-
-      const { chainId } = await this.ethers.getNetwork()
-      if (chainId !== 1) {
-        this.showNonMainnetWarning = true
+        arr.push(item)
+        this.checkIsSold(i)
+      }
+      this.items = [].concat(arr)
+      this.page++
+      setTimeout(function () {
+        this.loading = false
+      }, 1000)
+    },
+    async checkIsSold(itemId) {
+      const tokenSupply = await this.contract.tokenSupply(itemId)
+      console.log(Number(tokenSupply))
+      if (Number(tokenSupply) !== 0) {
+        const filtered = this.items.filter(this.compareId(itemId))
+        console.log(filtered)
+        if (filtered.length) {
+          filtered[0].is_sold = true
+        }
       }
     },
-    goToUrl(url) {
-      this.$router.push(url)
-    },
-    goToExternalUrl(url) {
-      window.open(url, '_blank')
-    },
-    metamaskButtonClicked() {
-      if (window.ethereum) {
-        this.rpcProviderInit()
-      } else {
-        this.$router.push('/other/install_metamask')
+    compareId(id) {
+      return function (element) {
+        return element.id === id
       }
     },
   },
 }
 </script>
-<style scoped>
-#styled-input {
-  height: 48px;
-  width: 48px;
-}
-.styled-input label[for] {
-  height: 48px;
-}
-.v-navigation-drawer > .list:not(.list--dense) .list__tile {
-  font-size: 17px;
-}
-.margin-right-20 {
-  margin-right: 20px;
-}
-.avatar {
-  max-width: 75px;
-}
-/* .list__tile--active.list__tile.list__tile--link {
-} */
-a.nuxt-link-exact-active.list__tile--active.list__tile.list__tile--link {
-  font-weight: 900 !important;
-}
-.v-list-item {
-  border-left: 10px solid transparent;
-}
-.v-list-item--active {
-  color: #333;
-  border-left: 10px solid #ff5722;
-}
-@media screen and (max-width: 756px) {
-  .top-links {
-    display: flex;
+
+<style lang="scss" scoped>
+.container {
+  max-width: 1500px;
+  text-align: center;
+  .items-container {
+    max-width: 1210px;
+    display: inline-block;
+    text-align: left;
     width: 100%;
-    justify-content: center;
+    /*.v2-lazy-list-wrap {
+      height: 600px !important;
+    }*/
+    /*.lazy-list-item {
+      height: auto !important;
+    }*/
+    .single-item {
+      display: inline-block;
+      margin: 11px;
+      a.sold {
+        color: #661515 !important;
+      }
+    }
   }
+}
+.black-text {
+  color: black !important;
+}
+
+.lazy-list-item {
+  height: auto !important;
+}
+
+.theme--dark.v-input input,
+.theme--dark.v-input textarea {
+  color: #ea201c;
 }
 </style>

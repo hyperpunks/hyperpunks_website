@@ -59,7 +59,7 @@
                 elevation="0"
                 class="ml-5 redtext"
                 @click="buyNow()"
-                >buy</v-btn
+                >mint</v-btn
               >
 
               <v-btn
@@ -68,7 +68,7 @@
                 elevation="0"
                 class="ml-5 redtext"
                 @click="buyNow()"
-                >buy</v-btn
+                >mint</v-btn
               >
             </section>
 
